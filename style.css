@@ -3,6 +3,8 @@ body, h1, h2, p, ul, li {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-image: url(G:\WebDev\rocketscience\resources\drew-taylor-7yty0M7XnYU-unsplash.jpg);
+background-size: cover;
 }
 
 /* Body */
