@@ -1,70 +1,109 @@
 /* General Reset */
-body, h1, h2, p {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  /* Body */
-  body {
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-  }
-  
-  /* Header */
-  header {
-    background: #333;
-    color: #317037;
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-  }
-  
-  header p {
-    font-size: 1.2em;
-  }
-  
-  /* Section */
-  .intro {
-    text-align: center;
-    padding: 50px 0;
-  }
-  
-  .intro h2 {
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
-  
-  .farm-buttons {
-    margin-top: 20px;
-  }
-  
-  .farm-buttons button {
-    background: #333;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .farm-buttons button:hover {
-    background: #555;
-  }
-  
-  /* Footer */
-  footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 20px;
-  }
-  
+body, h1, h2, p, ul, li {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F1F8E9; /* Light cream background */
+  color: #4CAF50; /* Forest Green */
+  line-height: 1.6;
+  padding: 0;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to bottom, #4CAF50, #8D6E63);
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 3em;
+  font-family: 'Georgia', serif; /* Decorative font for headers */
+  margin-bottom: 5px;
+}
+
+header p {
+  font-size: 1.2em;
+  font-weight: 300;
+}
+
+/* Main Section */
+main {
+  padding: 20px;
+}
+
+section {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}
+
+.intro h2, .farm-details h2 {
+  font-family: 'Georgia', serif;
+  font-size: 2em;
+  color: #8D6E63; /* Earthy Brown */
+  margin-bottom: 10px;
+}
+
+.intro p {
+  font-size: 1.1em;
+  color: #555;
+}
+
+/* Farm Buttons */
+.farm-buttons button {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.farm-buttons button:hover {
+  background: #8D6E63;
+  transform: scale(1.05);
+}
+
+/* Strain List */
+.strain-list {
+  list-style: none;
+  padding: 0;
+}
+
+.strain-list li {
+  background: #F9FBE7; /* Subtle earthy highlight */
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.strain-list li strong {
+  color: #4CAF50;
+}
+
+/* Footer */
+footer {
+  background: #4CAF50;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9em;
+  margin-top: 20px;
+}
