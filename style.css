@@ -80,10 +80,7 @@ section {
   background: #8D6E63;
   transform: scale(1.05);
 }
-/*Button to open email order form */
-.orderButton{
 
-}
 /* Strain List */
 .strain-list {
   list-style: none;
