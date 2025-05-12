@@ -61,7 +61,14 @@ section {
   font-size: 1.1em;
   color: #555;
 }
-
+/* Mail Buttons */
+.mailButtonWrapper{
+display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
 /* Farm Buttons */
 .farm-buttons button {
   background: #317037;
