@@ -5,6 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>54 Green Acres</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .quantity-input {
+      width: 60px;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("4Nay5tc4PcpTV9k4Q");
+    })();
+  </script>
 </head>
 <body>
   <header>
@@ -15,32 +62,235 @@
   </header>
 
   <main>
+    <div id="cart-icon" onclick="toggleCart(event)">
+      🛒 <span id="cart-count">0</span>
+    </div>
+    <div id="cart-details" style="display: none;">
+      <h2>Your Cart</h2>
+      <ul id="cart"></ul>
+      <div id="cart-subtotal"></div>
+      <button onclick="placeOrder()">Place an Order</button>
+      <div class="farm-buttons">
+        <button onclick="location.href='index.html'">Back to Main Menu</button>
+        <button onclick="location.href='https://www.54greenacres.com/'">To 54 Green Acres Official Page</button>
+      </div>
+    </div>
+
     <section class="farm-details">
       <div class="container">
         <h2>Available Strains</h2>
         <ul class="strain-list">
-          <li><strong>Strain: Huckleberry Diessel <br>THC: 26.14% <br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Sundae Driver <br>THC: 28.62%<br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Hindu Kush <br>THC: 28.73% <br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Kali <br>THC: 27.09%<br>Price: $700/lb</strong></li>
-          <li><strong>Strain: Green Dragon <br>THC: 26.79% <br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Blueberry Cheesecake <br>THC: 25.94% <br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Orange Apricot Mac <br>THC: 29.01%<br>Price: $600/lb</strong></li>
-          <li><strong>Strain: Raspberry Parfait <br>THC: 25.48% <br>Price: $600/lb</strong></li>
+          <li class="strain-item" onclick="addToCart('Huckleberry Diessel', '26.14%', '600')">
+            <div><strong>Strain: Huckleberry Diessel <br>THC: 26.14% <br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Sundae Driver', '28.62%', '600')">
+            <div><strong>Strain: Sundae Driver <br>THC: 28.62%<br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Hindu Kush', '28.73%', '600')">
+            <div><strong>Strain: Hindu Kush <br>THC: 28.73% <br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Kali', '27.09%', '700')">
+            <div><strong>Strain: Kali <br>THC: 27.09%<br>Price: $700/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Green Dragon', '26.79%', '600')">
+            <div><strong>Strain: Green Dragon <br>THC: 26.79% <br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Blueberry Cheesecake', '25.94%', '600')">
+            <div><strong>Strain: Blueberry Cheesecake <br>THC: 25.94% <br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Orange Apricot Mac', '29.01%', '600')">
+            <div><strong>Strain: Orange Apricot Mac <br>THC: 29.01%<br>Price: $600/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Raspberry Parfait', '25.48%', '600')">
+            <div><strong>Strain: Raspberry Parfait <br>THC: 25.48% <br>Price: $600/lb</strong></div>
+          </li>
         </ul>
-        <div class="farm-buttons">
-          <a class="orderButton" href="mailto:brandon@rocketscienceoregon.com?subject=Purchase Order&body=Hello, We'd like to put in an order for ."><button>Place an Order</button></a>
-          <button onclick="location.href='index.html'">Back to Main Menu</button>
-          <button onclick="location.href='https://www.54greenacres.com/'">To 54 Green Acres Official Page</button>
-        </div>
       </div>
     </section>
   </main>
+
+  <div id="orderFormPopup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closeOrderForm()">&times;</span>
+      <h2>Confirm Your Order</h2>
+      <div id="orderItemsContainer"></div>
+      <textarea id="orderNotes" placeholder="Add any additional notes for your order here" rows="4" cols="50"></textarea>
+      <input type="email" id="customerEmail" placeholder="Enter your email address" required>
+      <button onclick="submitOrder()">Confirm Order</button>
+    </div>
+  </div>
 
   <footer>
     <div class="container">
       <p>&copy; 2024 Rocket Science. All rights reserved.</p>
     </div>
   </footer>
+  
+<script>
+  let cart = [];
+  let halfPoundEnabled = false;
+
+  document.addEventListener('keydown', function(event) {
+    // Check for Ctrl + Alt + H
+    if (event.ctrlKey && event.altKey && event.key === 'h') {
+      halfPoundEnabled = !halfPoundEnabled;
+      alert(halfPoundEnabled ? '1/2 lb functionality enabled' : '1/2 lb functionality disabled');
+      updateCart(); // Refresh the cart display
+    }
+  });
+
+  function toggleCart(event) {
+    event.stopPropagation(); // Prevent the document click event from immediately closing the cart
+    const cartDetails = document.getElementById('cart-details');
+    cartDetails.style.display = cartDetails.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function updateCart() {
+    const cartElement = document.getElementById('cart');
+    const cartCount = document.getElementById('cart-count');
+    cartElement.innerHTML = '';
+    let totalItems = 0;
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      const itemSubtotal = item.price * item.quantity;
+      li.innerHTML = `
+        ${item.strain} - $${item.price}/lb x${item.quantity.toFixed(halfPoundEnabled ? 1 : 0)}lb
+        <br>Subtotal: $${itemSubtotal.toFixed(2)}
+        <button onclick="removeFromCart(${index})">Remove</button>
+      `;
+      cartElement.appendChild(li);
+      totalItems += item.quantity;
+      subtotal += itemSubtotal;
+    });
+    cartCount.textContent = totalItems.toFixed(halfPoundEnabled ? 1 : 0);
+    document.getElementById('cart-subtotal').innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+  }
+
+  function addToCart(strain, thc, price) {
+    const existingItem = cart.find(item => item.strain === strain);
+    if (existingItem) {
+      existingItem.quantity += halfPoundEnabled ? 0.5 : 1;
+    } else {
+      cart.push({ strain, thc, price: parseFloat(price), quantity: halfPoundEnabled ? 0.5 : 1 });
+    }
+    updateCart();
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function placeOrder() {
+    const orderItemsContainer = document.getElementById('orderItemsContainer');
+    orderItemsContainer.innerHTML = '';
+
+    cart.forEach((item, index) => {
+      const itemDiv = document.createElement('div');
+      itemDiv.innerHTML = `
+        <p>${item.strain} (THC: ${item.thc}) - $${item.price}/lb</p>
+        <input type="number" class="quantity-input" value="${item.quantity}" 
+               min="${halfPoundEnabled ? 0.5 : 1}" 
+               step="${halfPoundEnabled ? 0.5 : 1}" 
+               onchange="updateQuantity(${index}, this.value)">
+        <span>Subtotal: $${(item.price * item.quantity).toFixed(2)}</span>
+      `;
+      orderItemsContainer.appendChild(itemDiv);
+    });
+
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const subtotalDiv = document.createElement('div');
+    subtotalDiv.innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+    orderItemsContainer.appendChild(subtotalDiv);
+
+    document.getElementById('orderFormPopup').style.display = 'block';
+  }
+
+  function updateQuantity(index, newQuantity) {
+    const parsedQuantity = parseFloat(newQuantity);
+    if (!halfPoundEnabled && parsedQuantity % 1 !== 0) {
+      alert('Only whole pound quantities are allowed.');
+      placeOrder(); // Refresh the order form with the original quantity
+      return;
+    }
+    if (halfPoundEnabled && parsedQuantity % 0.5 !== 0) {
+      alert('Only half pound increments are allowed.');
+      placeOrder(); // Refresh the order form with the original quantity
+      return;
+    }
+    cart[index].quantity = parsedQuantity;
+    updateCart();
+    placeOrder(); // Refresh the order form
+  }
+
+  function closeOrderForm() {
+    document.getElementById('orderFormPopup').style.display = 'none';
+  }
+
+  function submitOrder() {
+    const notes = document.getElementById('orderNotes').value;
+    const customerEmail = document.getElementById('customerEmail').value;
+
+    if (!customerEmail) {
+      alert('Please enter your email address.');
+      return;
+    }
+
+    let formattedOrderDetails = "Order Details:\n\n";
+    
+    // Iterate through the cart items to include quantity
+    cart.forEach(item => {
+      formattedOrderDetails += `${item.strain} (THC: ${item.thc}) - $${item.price}/lb\n`;
+      formattedOrderDetails += `Quantity: ${item.quantity.toFixed(halfPoundEnabled ? 1 : 0)} lb\n`;
+      formattedOrderDetails += `Subtotal: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+    });
+
+    // Add total
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    formattedOrderDetails += `Total: $${total.toFixed(2)}\n\n`;
+
+    if (notes) {
+      formattedOrderDetails += `Additional Notes:\n${notes}\n`;
+    }
+
+    const templateParams = {
+      from_email: customerEmail,
+      message: formattedOrderDetails,
+      farm_name: farmName,
+      recipient: 'dinofreud@gmail.com'
+    };
+
+    console.log('Sending email with params:', templateParams);
+
+        emailjs.send('service_k67bf2e', 'template_1hz0yfr', templateParams)
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        alert('Order submitted successfully!');
+        cart = []; // Clear the cart
+        updateCart(); // Update the cart display
+        closeOrderForm(); // Close the order form popup
+      }, function(error) {
+        console.log('FAILED...', error);
+        alert('Failed to submit order. Please try again.');
+      });
+  }
+
+  // Close cart when clicking outside
+  document.addEventListener('click', function(event) {
+    const cartDetails = document.getElementById('cart-details');
+    const cartIcon = document.getElementById('cart-icon');
+
+    // Check if the click is outside the cart and the cart icon
+    if (!cartDetails.contains(event.target) && !cartIcon.contains(event.target)) {
+      cartDetails.style.display = 'none';
+    }
+  });
+
+  // Prevent the cart from closing when clicking inside it
+  document.getElementById('cart-details').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+</script>
 </body>
 </html>

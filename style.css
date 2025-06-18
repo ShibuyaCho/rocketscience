@@ -3,7 +3,7 @@ body, h1, h2, p, ul, li {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-image: url(rocketscience/drew-taylor-7yty0M7XnYU-unsplash.jpg);
+  
 background-size: cover;
 }
 
@@ -14,6 +14,24 @@ body {
   color: #4CAF50; /* Forest Green */
   line-height: 1.6;
   padding: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Background image with lowered opacity */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(drew-taylor-7yty0M7XnYU-unsplash.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3; /* Adjust this value to change the opacity (0.0 to 1.0) */
+  z-index: -1;
 }
 
 /* Header */
@@ -69,23 +87,37 @@ display: flex;
   /*margin-top: 10px;*/
   flex-wrap: wrap;
 }
-/* Farm Buttons */
+
+.farm-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
 .farm-buttons button {
-  background: #317037;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  margin: 10px;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+    background: #8D6E63;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%;
 }
 
 .farm-buttons button:hover {
-  background: #8D6E63;
-  transform: scale(1.05);
+    background: #a58579;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .farm-buttons {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Strain List */
@@ -94,25 +126,232 @@ display: flex;
   padding: 0;
 }
 
-.strain-list li {
-  background: #F9FBE7; /* Subtle earthy highlight */
-  margin: 10px 0;
+
+
+/* Updated Cart Icon */
+#cart-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #317037;
+  color: white;
   padding: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 24px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#cart-icon:hover {
+  background-color: #3c8b44;
+  transform: scale(1.05);
+}
+
+#cart-count {
+  background-color: #ff4d4d;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.7em;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-weight: bold;
+}
+
+/* Updated Cart Details */
+#cart-details {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: white;
+  border: none;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  z-index: 999;
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#cart-details h2 {
+  color: #317037;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+#cart {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+#cart li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+#cart li button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#cart li button:hover {
+  background-color: #ff3333;
+}
+
+#orderNotes, #customerEmail {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#cart-details button {
+  background-color: #317037;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#cart-details button:hover {
+  background-color: #3c8b44;
+}
+
+.farm-buttons {
+  margin-top: 15px;
+}
+
+.farm-buttons button {
+  background-color: #8D6E63;
+  margin-bottom: 10px;
+}
+
+.farm-buttons button:hover {
+  background-color: #a58579;
+}
+.strain-list li {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.strain-list li:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02);
+}
+
+.strain-list li:active {
+    background-color: #d0d0d0;
+    transform: scale(0.98);
 }
 
 .strain-list li strong {
   color: #317037;
 }
 
+
+.farm-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.farm-buttons button {
+    background: #8D6E63;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: calc(50% - 15px); /* Two buttons per row on larger screens */
+}
+
+.farm-buttons button:hover {
+    background: #a58579;
+    transform: scale(1.05);
+}
+
 /* Footer */
 footer {
-  background: #317037;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 0.9em;
-  margin-top: 20px;
+    background: linear-gradient(to bottom, #8D6E63, #317037); /* Reversed gradient */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    height:90px;
+    position: sticky;
+    bottom: 0;
+}
+
+footer .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+footer p {
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .farm-buttons {
+        flex-direction: column;
+    }
+    
+    .farm-buttons button {
+        width: 100%;
+        font-size: 1.1em;
+        padding: 12px 20px;
+    }
+}
+
+/* Ensure minimum page height for proper footer positioning */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1 0 auto;
+}
+
+/* Additional style to push footer to bottom if content is short */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
 }

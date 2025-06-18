@@ -1,48 +1,290 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Harem</title>
+  <title>Sun God Medicinals</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .quantity-input {
+      width: 60px;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("4Nay5tc4PcpTV9k4Q");
+    })();
+  </script>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1>Harem</h1>
-      <p>Hollistic Medicine and Cannabis hand-in-hand.</p>
-         </div>
+      <h1>Sun God Medicinals</h1>
+      <p>Holistic Medicine and Cannabis hand-in-hand.</p>
+    </div>
   </header>
 
   <main>
-    <section class="farm-details">
-      <div class="container">
-        <h2>Popular Products</h2>
-        <ul class="strain-list">
-    <li><strong> Allies Infused Preroll(1g) Ogre Flower + Ice Cream Cake Hash + Organic Damiana  <br>THC: 185mg <br>CBG: 49.1mg <br>Price: $2.50/unit $50/case </strong></li>
-    <li><strong> Allies Infused Preroll(1g) Blood Orange Tangie + Guava Hash + Organic Rose Petals  <br>THC:122.2mg <br>CBG: 3.5mg <br>Price: $2.50/unit $50/case </strong></li>
-    <li><strong> Hypnos Sleep Massage Oil 8oz <br>CBD: 500mg <br>Price: $7.50/unit </strong></li>
-    <li><strong> Loki 1000 CBN Drops 1:1 CBN:CBD | Naturally Derived CBN <br>CBN: 10000mg <br>CBD: 1000mg <br>Price: $23/unit $276/case </strong></li>
-   <li><strong> Loki 1000 Drops 1:1 CBG:CBD <be>CBG: 10000mg <br>CBD: 1000mg <br>Price: $18/unit $216/case </strong></li>  
-    <li><strong> Certified Organic Herbal Smoking Blend (1oz) "Panacea Transition" | Mullein, Lobelia, Catnip, Skullcap, and Rose Petals <br>Price: $14/unit $42/case </strong></li>
-  
-        
-        </ul>
-        <div class="farm-buttons">
-          <a class="orderButton" href="mailto:brandon@rocketscienceoregon.com?subject=Purchase Order&body=Hello, We'd like to put in an order for ."><button>Place an Order</button></a>
-          <button onclick="location.href='index.html'">Back to Main Menu</button>
-          <button onclick="location.href='https://www.sungodmedicinals.com/'">To Sun GOd Medicinals Official Page</button>
-         <button onclick="location.href='https://www.leafly.com/brands/sun-god-medicinals'">Placce an order on Leafly</button> 
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <p>&copy; 2024 Rocket Science. All rights reserved.</p>
+    <div id="cart-icon" onclick="toggleCart(event)">
+      🛒 <span id="cart-count">0</span>
     </div>
-  </footer>
+    <div id="cart-details" style="display: none;">
+      <h2>Your Cart</h2>
+      <ul id="cart"></ul>
+      <div id="cart-subtotal"></div>
+      <button onclick="placeOrder()">Place an Order</button>
+      <div class="farm-buttons">
+        <button onclick="location.href='index.html'">Back to Main Menu</button>
+      </div>
+    </div>
+
+   <div id="orderFormPopup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closeOrderForm()">&times;</span>
+    <h2>Confirm Your Order</h2>
+    <div id="orderItemsContainer"></div>
+    <textarea id="orderNotes" placeholder="Add any additional notes for your order here" rows="4" cols="50"></textarea>
+    <input type="email" id="customerEmail" placeholder="Enter your email address" required>
+    <button onclick="submitOrder()">Confirm Order</button>
+  </div>
+</div>
+<!-- Update the strain list section -->
+<section class="farm-details">
+  <div class="container">
+    <h2>Popular Products</h2>
+    <ul class="strain-list">
+      <li class="strain-item" onclick="addToCart('Allies Infused Preroll (Ogre Flower + Ice Cream Cake Hash + Organic Damiana)', '185mg THC, 49.1mg CBG', '2.50', 20)">
+        <div><strong>Allies Infused Preroll(1g) Ogre Flower + Ice Cream Cake Hash + Organic Damiana<br>THC: 185mg<br>CBG: 49.1mg<br>Price: $2.50/unit $50/case (20 units)</strong></div>
+      </li>
+      <li class="strain-item" onclick="addToCart('Allies Infused Preroll (Blood Orange Tangie + Guava Hash + Organic Rose Petals)', '122.2mg THC, 3.5mg CBG', '2.50', 20)">
+        <div><strong>Allies Infused Preroll(1g) Blood Orange Tangie + Guava Hash + Organic Rose Petals<br>THC: 122.2mg<br>CBG: 3.5mg<br>Price: $2.50/unit $50/case (20 units)</strong></div>
+      </li>
+      <li class="strain-item" onclick="addToCart('Hypnos Sleep Massage Oil 8oz', '500mg CBD', '7.50', 1)">
+        <div><strong>Hypnos Sleep Massage Oil 8oz<br>CBD: 500mg<br>Price: $7.50/unit</strong></div>
+      </li>
+      <li class="strain-item" onclick="addToCart('Loki 1000 CBN Drops 1:1 CBN:CBD', '1000mg CBN, 1000mg CBD', '23', 12)">
+        <div><strong>Loki 1000 CBN Drops 1:1 CBN:CBD | Naturally Derived CBN<br>CBN: 1000mg<br>CBD: 1000mg<br>Price: $23/unit $276/case (12 units)</strong></div>
+      </li>
+      <li class="strain-item" onclick="addToCart('Loki 1000 Drops 1:1 CBG:CBD', '1000mg CBG, 1000mg CBD', '18', 12)">
+        <div><strong>Loki 1000 Drops 1:1 CBG:CBD<br>CBG: 1000mg<br>CBD: 1000mg<br>Price: $18/unit $216/case (12 units)</strong></div>
+      </li>
+      <li class="strain-item" onclick="addToCart('Certified Organic Herbal Smoking Blend (1oz) Panacea Transition', 'N/A', '14', 3)">
+        <div><strong>Certified Organic Herbal Smoking Blend (1oz) "Panacea Transition" | Mullein, Lobelia, Catnip, Skullcap, and Rose Petals<br>Price: $14/unit $42/case (3 units)</strong></div>
+      </li>
+    </ul>
+    <div class="farm-buttons">
+      <button onclick="location.href='https://www.sungodmedicinals.com/'">To Sun God Medicinals Official Page</button>
+      <button onclick="location.href='https://www.leafly.com/brands/sun-god-medicinals'">Place an order on Leafly</button>
+    </div>
+  </div>
+</section>
+
+<!-- Update the script section -->
+<script>
+  let cart = [];
+
+  function toggleCart(event) {
+    event.stopPropagation();
+    const cartDetails = document.getElementById('cart-details');
+    cartDetails.style.display = cartDetails.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function addToCart(strain, thc, price, caseSize = 1) {
+    const existingItem = cart.find(item => item.strain === strain);
+    const pricePerUnit = parseFloat(price);
+    
+    if (existingItem) {
+      if (caseSize > 1) {
+        existingItem.quantity += caseSize;
+      } else {
+        existingItem.quantity += 1;
+      }
+    } else {
+      cart.push({ 
+        strain, 
+        thc, 
+        price: pricePerUnit, 
+        quantity: caseSize > 1 ? caseSize : 1,
+        caseSize: caseSize
+      });
+    }
+    updateCart();
+  }
+
+  function updateCart() {
+    const cartElement = document.getElementById('cart');
+    const cartCount = document.getElementById('cart-count');
+    cartElement.innerHTML = '';
+    let totalItems = 0;
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      const itemSubtotal = item.price * item.quantity;
+      const caseInfo = item.caseSize > 1 ? ` (${item.quantity / item.caseSize} case(s) of ${item.caseSize})` : '';
+      li.innerHTML = `
+        ${item.strain} - $${item.price}/unit x${item.quantity} unit(s)${caseInfo}
+        <br>Subtotal: $${itemSubtotal.toFixed(2)}
+        <button onclick="removeFromCart(${index})">Remove</button>
+      `;
+      cartElement.appendChild(li);
+      totalItems += item.quantity;
+      subtotal += itemSubtotal;
+    });
+    cartCount.textContent = totalItems;
+    document.getElementById('cart-subtotal').innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function placeOrder() {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Please add items before placing an order.");
+    return;
+  }
+
+  const orderItemsContainer = document.getElementById('orderItemsContainer');
+  orderItemsContainer.innerHTML = '';
+
+  cart.forEach((item, index) => {
+    const itemDiv = document.createElement('div');
+    const caseInfo = item.caseSize > 1 ? ` (${item.quantity / item.caseSize} case(s) of ${item.caseSize})` : '';
+    itemDiv.innerHTML = `
+      <p>${item.strain} (${item.thc}) - $${item.price}/unit</p>
+      <input type="number" class="quantity-input" value="${item.quantity}" 
+             min="${item.caseSize}" step="${item.caseSize}" onchange="updateQuantity(${index}, this.value)">
+      <span>Subtotal: $${(item.price * item.quantity).toFixed(2)}${caseInfo}</span>
+    `;
+    orderItemsContainer.appendChild(itemDiv);
+  });
+
+  const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const subtotalDiv = document.createElement('div');
+  subtotalDiv.innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+  orderItemsContainer.appendChild(subtotalDiv);
+
+  document.getElementById('orderFormPopup').style.display = 'block';
+}
+  function updateQuantity(index, newQuantity) {
+    const item = cart[index];
+    const parsedQuantity = parseInt(newQuantity);
+    if (parsedQuantity < item.caseSize) {
+      alert(`Quantity must be at least ${item.caseSize} for this item.`);
+      placeOrder();
+      return;
+    }
+    if (item.caseSize > 1 && parsedQuantity % item.caseSize !== 0) {
+      alert(`Quantity must be a multiple of ${item.caseSize} for this item.`);
+      placeOrder();
+      return;
+    }
+    item.quantity = parsedQuantity;
+    updateCart();
+    placeOrder();
+  }
+
+  function closeOrderForm() {
+    document.getElementById('orderFormPopup').style.display = 'none';
+  }
+
+  function submitOrder() {
+    const notes = document.getElementById('orderNotes').value;
+    const customerEmail = document.getElementById('customerEmail').value;
+    const farmName = document.querySelector('header h1').textContent;
+
+    if (!customerEmail) {
+      alert('Please enter your email address.');
+      return;
+    }
+
+    let formattedOrderDetails = "Order Details:\n\n";
+    
+    cart.forEach(item => {
+      const caseInfo = item.caseSize > 1 ? ` (${item.quantity / item.caseSize} case(s) of ${item.caseSize})` : '';
+      formattedOrderDetails += `${item.strain} (${item.thc}) - $${item.price}/unit\n`;
+      formattedOrderDetails += `Quantity: ${item.quantity} unit(s)${caseInfo}\n`;
+      formattedOrderDetails += `Subtotal: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    formattedOrderDetails += `Total: $${total.toFixed(2)}\n\n`;
+
+    if (notes) {
+      formattedOrderDetails += `Additional Notes:\n${notes}\n`;
+    }
+
+    const templateParams = {
+      from_email: customerEmail,
+      message: formattedOrderDetails,
+      farm_name: farmName,
+      recipient: 'dinofreud@gmail.com'
+    };
+
+    console.log('Sending email with params:', templateParams);
+    emailjs.send('service_k67bf2e', 'template_1hz0yfr', templateParams)
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        alert('Order submitted successfully!');
+        cart = [];
+        updateCart();
+        closeOrderForm();
+      }, function(error) {
+        console.log('FAILED...', error);
+        alert('Failed to submit order. Please try again.');
+      });
+  }
+
+  document.addEventListener('click', function(event) {
+    const cartDetails = document.getElementById('cart-details');
+    const cartIcon = document.getElementById('cart-icon');
+
+    if (!cartDetails.contains(event.target) && !cartIcon.contains(event.target)) {
+      cartDetails.style.display = 'none';
+    }
+  });
+
+  document.getElementById('cart-details').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+</script>
 </body>
 </html>
