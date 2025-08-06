@@ -5,45 +5,277 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Savage Skunk</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .quantity-input {
+      width: 60px;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init("4Nay5tc4PcpTV9k4Q");
+    })();
+  </script>
 </head>
 <body>
   <header>
     <div class="container">
       <h1>Savage Skunk</h1>
-      <p>Organic Cannabis Strains - Savage Scents at a Steal  </p>
+      <p>Organic Cannabis Strains - Savage Scents at a Steal</p>
     </div>
   </header>
 
   <main>
+    <div id="cart-icon" onclick="toggleCart(event)">
+      🛒 <span id="cart-count">0</span>
+    </div>
+    <div id="cart-details" style="display: none;">
+      <h2>Your Cart</h2>
+      <ul id="cart"></ul>
+      <div id="cart-subtotal"></div>
+      <button onclick="placeOrder()">Place an Order</button>
+      <div class="farm-buttons">
+        <button onclick="location.href='index.html'">Back to Main Menu</button>
+      </div>
+    </div>
+
     <section class="farm-details">
       <div class="container">
         <h2>Available Strains</h2>
-               <ul class="strain-list">
-          <li><strong>Strain: Ice Cream Sundae <br>THC: 26.14% <br>Price: $400/lb</strong></li>
-          <li><strong>Strain: Blue Magoo <br>THC: 28.62%<br>Price: $400/lb</strong></li>
-          <li><strong>Strain: Mimosa <br>THC: 28.73% <br>Price: $400/lb</strong></li>
-          <li><strong>Strain: Garlic Breath <br>THC: 27.09%<br>Price: $400/lb</strong></li>
-          <li><strong>Strain: Papaya Punch <br>THC: 26.79% <br>Price: $400/lb</strong></li>
-          <li><strong>Strain: Biscotti Pancakes <br>THC: 25.94% <br>Price: $400/lb</strong></li>
-        </ul>
-         <p>Packaged Products: Leaflink available via Southern Oregon Family Farms</p>
         <ul class="strain-list">
-          <li><strong>Infused Pre-roll <br>Full Gram <br>Price: $3.00/unit</strong></li>
-          <li><strong>Pre-roll 10 Pack <br>Half Gram <br>Price: $5.00/unit</strong></li>
+          <li class="strain-item" onclick="addToCart('Ice Cream Sundae', '26.14%', '400')">
+            <div><strong>Strain: Ice Cream Sundae <br>THC: 26.14% <br>Price: $400/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Blue Magoo', '28.62%', '400')">
+            <div><strong>Strain: Blue Magoo <br>THC: 28.62%<br>Price: $400/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Mimosa', '28.73%', '400')">
+            <div><strong>Strain: Mimosa <br>THC: 28.73% <br>Price: $400/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Garlic Breath', '27.09%', '400')">
+            <div><strong>Strain: Garlic Breath <br>THC: 27.09%<br>Price: $400/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Papaya Punch', '26.79%', '400')">
+            <div><strong>Strain: Papaya Punch <br>THC: 26.79% <br>Price: $400/lb</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Biscotti Pancakes', '25.94%', '400')">
+            <div><strong>Strain: Biscotti Pancakes <br>THC: 25.94% <br>Price: $400/lb</strong></div>
+          </li>
         </ul>
-        <div class="farm-buttons">
-          <a class="orderButton" href="mailto:brandon@rocketscienceoregon.com?subject=Purchase Order&body=Hello, We'd like to put in an order for ."><button>Place an Order</button></a>
-          <button onclick="location.href='index.html'">Back to Main Menu</button>
-          <button onclick="location.href='https://www.54greenacres.com/'">To 54 Green Acres Official Page</button>
-        </div>
+        <p>Packaged Products: Leaflink available via Southern Oregon Family Farms</p>
+        <ul class="strain-list">
+          <li class="strain-item" onclick="addToCart('Infused Pre-roll (Full Gram)', 'N/A', '2.50')">
+            <div><strong>Infused Pre-roll <br>Full Gram <br>Price: $2.50/unit</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('2pk Pre-roll (Two Gram)', 'N/A', '2.50')">
+            <div><strong>2pk Pre-roll <br>Two Gram <br>Price: $2.50/unit</strong></div>
+          </li>
+          <li class="strain-item" onclick="addToCart('Pre-roll 10 Pack (Half Gram)', 'N/A', '5.00')">
+            <div><strong>Pre-roll 10 Pack <br>Half Gram <br>Price: $5.00/unit</strong></div>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
+
+  <div id="orderFormPopup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closeOrderForm()">&times;</span>
+      <h2>Confirm Your Order</h2>
+      <div id="orderItemsContainer"></div>
+      <textarea id="orderNotes" placeholder="Add any additional notes for your order here" rows="4" cols="50"></textarea>
+      <input type="email" id="customerEmail" placeholder="Enter your email address" required>
+      <button onclick="submitOrder()">Confirm Order</button>
+    </div>
+  </div>
 
   <footer>
     <div class="container">
       <p>&copy; 2024 Rocket Science. All rights reserved.</p>
     </div>
   </footer>
+  
+<script>
+  let cart = [];
+
+  function toggleCart(event) {
+    event.stopPropagation();
+    const cartDetails = document.getElementById('cart-details');
+    cartDetails.style.display = cartDetails.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function updateCart() {
+    const cartElement = document.getElementById('cart');
+    const cartCount = document.getElementById('cart-count');
+    cartElement.innerHTML = '';
+    let totalItems = 0;
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      const itemSubtotal = item.price * item.quantity;
+      li.innerHTML = `
+        ${item.strain} - $${item.price}/lb x${item.quantity}lb
+        <br>Subtotal: $${itemSubtotal.toFixed(2)}
+        <button onclick="removeFromCart(${index})">Remove</button>
+      `;
+      cartElement.appendChild(li);
+      totalItems += item.quantity;
+      subtotal += itemSubtotal;
+    });
+    cartCount.textContent = totalItems;
+    document.getElementById('cart-subtotal').innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+  }
+
+  function addToCart(strain, thc, price) {
+    const existingItem = cart.find(item => item.strain === strain);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ strain, thc, price: parseFloat(price), quantity: 1 });
+    }
+    updateCart();
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function placeOrder() {
+    const orderItemsContainer = document.getElementById('orderItemsContainer');
+    orderItemsContainer.innerHTML = '';
+
+    cart.forEach((item, index) => {
+      const itemDiv = document.createElement('div');
+      itemDiv.innerHTML = `
+        <p>${item.strain} (THC: ${item.thc}) - $${item.price}/lb</p>
+        <input type="number" class="quantity-input" value="${item.quantity}" 
+               min="1" step="1" onchange="updateQuantity(${index}, this.value)">
+        <span>Subtotal: $${(item.price * item.quantity).toFixed(2)}</span>
+      `;
+      orderItemsContainer.appendChild(itemDiv);
+    });
+
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const subtotalDiv = document.createElement('div');
+    subtotalDiv.innerHTML = `<strong>Total: $${subtotal.toFixed(2)}</strong>`;
+    orderItemsContainer.appendChild(subtotalDiv);
+
+    document.getElementById('orderFormPopup').style.display = 'block';
+  }
+
+  function updateQuantity(index, newQuantity) {
+    const parsedQuantity = parseInt(newQuantity);
+    if (parsedQuantity < 1) {
+      alert('Quantity must be at least 1.');
+      placeOrder();
+      return;
+    }
+    cart[index].quantity = parsedQuantity;
+    updateCart();
+    placeOrder();
+  }
+
+  function closeOrderForm() {
+    document.getElementById('orderFormPopup').style.display = 'none';
+  }
+
+  function submitOrder() {
+    const notes = document.getElementById('orderNotes').value;
+    const customerEmail = document.getElementById('customerEmail').value;
+    const farmName = document.querySelector('header h1').textContent;
+
+    if (!customerEmail) {
+      alert('Please enter your email address.');
+      return;
+    }
+
+    let formattedOrderDetails = "Order Details:\n\n";
+    
+    cart.forEach(item => {
+      formattedOrderDetails += `${item.strain} (THC: ${item.thc}) - $${item.price}/lb\n`;
+      formattedOrderDetails += `Quantity: ${item.quantity} lb\n`;
+      formattedOrderDetails += `Subtotal: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    formattedOrderDetails += `Total: $${total.toFixed(2)}\n\n`;
+
+    if (notes) {
+      formattedOrderDetails += `Additional Notes:\n${notes}\n`;
+    }
+
+    const templateParams = {
+      from_email: customerEmail,
+      message: formattedOrderDetails,
+      farm_name: farmName,
+      recipient: 'dinofreud@gmail.com'
+    };
+
+    console.log('Sending email with params:', templateParams);
+
+    emailjs.send('service_k67bf2e', 'template_1hz0yfr', templateParams)
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        alert('Order submitted successfully!');
+        cart = [];
+        updateCart();
+        closeOrderForm();
+      }, function(error) {
+        console.log('FAILED...', error);
+        alert('Failed to submit order. Please try again.');
+      });
+  }
+   document.addEventListener('click', function(event) {
+    const cartDetails = document.getElementById('cart-details');
+    const cartIcon = document.getElementById('cart-icon');
+
+    // Check if the click is outside the cart and the cart icon
+    if (!cartDetails.contains(event.target) && !cartIcon.contains(event.target)) {
+      cartDetails.style.display = 'none';
+    }
+  });
+
+  // Prevent the cart from closing when clicking inside it
+  document.getElementById('cart-details').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+</script>
 </body>
 </html>
